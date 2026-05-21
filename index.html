@@ -173,13 +173,9 @@ body {
   font-family: var(--font-round); font-weight: 700; font-size: 15px;
   margin: 0 auto 8px;
 }
-.av-blue   { background: #dbeafe; color: #1e40af; }
-.av-teal   { background: #d1fae5; color: #065f46; }
-.av-purple { background: #ede9fe; color: #4c1d95; }
-.av-coral  { background: #fee2e2; color: #7f1d1d; }
-.av-green  { background: #dcfce7; color: #14532d; }
-.av-pink   { background: #fce7f3; color: #831843; }
-.av-amber  { background: #fef3c7; color: #78350f; }
+.av-blue, .av-teal, .av-purple, .av-coral, .av-green, .av-pink, .av-amber {
+  background: var(--primary); color: #ffffff;
+}
 .member-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
 .member-company { font-size: 11px; color: var(--text-sub); }
 .role-badge {
@@ -752,8 +748,7 @@ function switchTab(name) {
 // ═══ MEMBERS ═══
 function initials(name) {
   const parts = name.trim().split(/[\s　]+/);
-  if(parts.length >= 2) return parts[0].charAt(0) + parts[1].charAt(0);
-  return name.slice(0,2);
+  return parts[0] || name.slice(0,2);
 }
 function roleLabel(r) {
   return {chair:'委員長',vice:'副委員長',staff:'幹事',member:'委員'}[r]||'委員';
