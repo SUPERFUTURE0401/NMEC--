@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>次世代コネクト委員会 | NMEC</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
+
+:root {
+  --primary: #1a4080;
+  --primary-light: #2563a8;
+  --primary-pale: #e8f0fb;
+  --accent: #e8a020;
+  --accent-light: #fdf3e0;
+  --success: #1a7a4a;
+  --success-light: #e6f4ec;
+  --danger: #b91c1c;
+  --danger-light: #fef2f2;
+  --warn: #b45309;
+  --warn-light: #fffbeb;
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --border: #dde3ef;
+  --text: #1a2236;
+  --text-sub: #5a6782;
+  --text-muted: #94a3b8;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 12px rgba(26,64,128,0.07);
+  --shadow-md: 0 4px 24px rgba(26,64,128,0.11);
+  --font: 'Noto Sans JP', sans-serif;
+  --font-round: 'M PLUS Rounded 1c', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+.site-header {
+  background: var(--primary);
+  color: #fff;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.site-header-left { display: flex; align-items: center; gap: 12px; }
+.site-logo {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-round);
+  font-weight: 700; font-size: 11px;
+  color: #fff; text-align: center; line-height: 1.2;
+  flex-shrink: 0;
+}
+.site-title-wrap { display: flex; flex-direction: column; }
+.site-title { font-family: var(--font-round); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+.site-subtitle { font-size: 10px; opacity: 0.7; }
+.admin-badge {
+  display: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 20px;
+  font-family: var(--font-round);
+}
+.admin-badge.visible { display: inline-block; }
+
+/* ─── TABS ─── */
+.tab-bar {
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 56px; z-index: 90;
+  overflow-x: auto;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex: 1; min-width: 80px;
+  padding: 12px 8px 10px;
+  border: none; background: transparent;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px; font-weight: 500;
+  color: var(--text-sub);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.tab-btn .tab-icon { font-size: 18px; }
+.tab-btn:hover { color: var(--primary); background: var(--primary-pale); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+/* ─── CONTENT ─── */
+.content { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ─── SECTION TITLE ─── */
+.sec-title {
+  font-family: var(--font-round);
+  font-size: 15px; font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 16px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* ─── CARDS ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+/* ─── STATS ─── */
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+.stat-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.stat-num { font-family: var(--font-round); font-size: 26px; font-weight: 700; color: var(--primary); }
+.stat-label { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+/* ─── MEMBER GRID ─── */
+.member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.member-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s, transform 0.15s;
+  cursor: default;
+  position: relative;
+}
+.member-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-round); font-weight: 700; font-size: 15px;
+  margin: 0 auto 8px;
+}
+.av-blue   { background: #dbeafe; color: #1e40af; }
+.av-teal   { background: #d1fae5; color: #065f46; }
+.av-purple { background: #ede9fe; color: #4c1d95; }
+.av-coral  { background: #fee2e2; color: #7f1d1d; }
+.av-green  { background: #dcfce7; color: #14532d; }
+.av-pink   { background: #fce7f3; color: #831843; }
+.av-amber  { background: #fef3c7; color: #78350f; }
+.member-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.member-company { font-size: 11px; color: var(--text-sub); }
+.role-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px; margin-top: 6px;
+}
+.rb-chair  { background: #ede9fe; color: #4c1d95; }
+.rb-vice   { background: #d1fae5; color: #065f46; }
+.rb-staff  { background: #dbeafe; color: #1e40af; }
+.rb-member { background: #f1f5f9; color: #475569; }
+.member-edit-btns {
+  display: none;
+  position: absolute; top: 6px; right: 6px;
+  gap: 4px;
+}
+.admin-mode .member-edit-btns { display: flex; }
+.edit-icon-btn {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.btn-edit-m { background: #dbeafe; color: #1e40af; }
+.btn-del-m  { background: #fee2e2; color: #7f1d1d; }
+
+/* ─── BUTTON ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  border: none; cursor: pointer; font-family: var(--font);
+  font-size: 13px; font-weight: 500; transition: all 0.15s;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-light); }
+.btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+.btn-outline:hover { background: var(--primary-pale); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #991b1b; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-dashed {
+  width: 100%; padding: 10px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-sub);
+  cursor: pointer; font-family: var(--font); font-size: 13px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: all 0.15s;
+}
+.btn-dashed:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-pale); }
+.admin-only { display: none; }
+.admin-mode .admin-only { display: flex; }
+
+/* ─── CALENDAR ─── */
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-nav-btn {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface);
+  cursor: pointer; font-size: 14px; color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+}
+.cal-nav-btn:hover { background: var(--primary-pale); color: var(--primary); }
+.cal-month-label { font-family: var(--font-round); font-size: 16px; font-weight: 700; color: var(--primary); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 16px; }
+.cal-dow {
+  text-align: center; font-size: 11px; font-weight: 700;
+  color: var(--text-sub); padding: 4px 0;
+}
+.cal-dow.sun { color: var(--danger); }
+.cal-dow.sat { color: var(--primary); }
+.cal-cell {
+  min-height: 46px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px 4px;
+  font-size: 11px; cursor: default;
+  transition: border-color 0.15s;
+}
+.cal-cell.empty { background: transparent; border-color: transparent; }
+.cal-cell.today { border-color: var(--primary); border-width: 1.5px; }
+.cal-cell.has-event { cursor: pointer; }
+.cal-cell.has-event:hover { border-color: var(--primary-light); }
+.day-num { color: var(--text-sub); margin-bottom: 2px; }
+.cal-cell.today .day-num { color: var(--primary); font-weight: 700; }
+.cal-cell.sun .day-num { color: var(--danger); }
+.cal-cell.sat .day-num { color: var(--primary); }
+.ev-dot {
+  font-size: 9px; border-radius: 3px;
+  padding: 1px 3px; margin-top: 1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ev-a { background: #ede9fe; color: #4c1d95; }
+.ev-b { background: #d1fae5; color: #065f46; }
+.ev-c { background: #fef3c7; color: #78350f; }
+
+/* ─── SCHEDULE LIST ─── */
+.schedule-list { display: flex; flex-direction: column; gap: 8px; }
+.sched-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s;
+}
+.sched-item:hover { box-shadow: var(--shadow-md); }
+.sched-date { text-align: center; min-width: 42px; flex-shrink: 0; }
+.sched-month { font-size: 10px; color: var(--text-sub); }
+.sched-day { font-family: var(--font-round); font-size: 22px; font-weight: 700; color: var(--primary); line-height: 1.1; }
+.sched-dow { font-size: 10px; color: var(--text-sub); }
+.sched-info { flex: 1; }
+.sched-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.sched-detail { font-size: 11px; color: var(--text-sub); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.sched-actions { display: flex; gap: 4px; align-items: flex-start; }
+.sched-tag {
+  font-size: 10px; font-weight: 700;
+  padding: 3px 9px; border-radius: 20px;
+}
+.st-a { background: #ede9fe; color: #4c1d95; }
+.st-b { background: #d1fae5; color: #065f46; }
+.st-c { background: #fef3c7; color: #78350f; }
+
+/* ─── DOCS ─── */
+.folder-section { margin-bottom: 20px; }
+.folder-hd {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.folder-hd:hover { background: var(--primary-pale); }
+.folder-hd span { font-size: 13px; font-weight: 700; flex: 1; }
+.folder-hd .cnt { font-size: 11px; color: var(--text-sub); }
+.file-list { display: flex; flex-direction: column; gap: 6px; padding-left: 6px; }
+.file-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: var(--shadow);
+}
+.file-ico { font-size: 20px; color: var(--text-sub); flex-shrink: 0; }
+.file-info { flex: 1; }
+.file-name { font-size: 13px; font-weight: 500; }
+.file-meta { font-size: 11px; color: var(--text-sub); margin-top: 1px; }
+.file-actions { display: flex; gap: 4px; }
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--text-sub);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 12px;
+}
+.upload-area:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-pale); }
+.upload-area input { display: none; }
+.upload-area svg { display: block; margin: 0 auto 8px; }
+
+/* ─── ADMIN ─── */
+.admin-lock {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  max-width: 400px; margin: 40px auto;
+}
+.admin-lock-icon { font-size: 48px; margin-bottom: 12px; }
+.admin-lock h2 { font-family: var(--font-round); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.admin-lock p { font-size: 13px; color: var(--text-sub); margin-bottom: 20px; }
+.pin-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.pin-input {
+  width: 48px; height: 52px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center; font-size: 22px;
+  font-family: var(--font-round); font-weight: 700;
+  color: var(--primary);
+  outline: none; transition: border-color 0.15s;
+  background: var(--bg);
+}
+.pin-input:focus { border-color: var(--primary); }
+.pin-error { font-size: 12px; color: var(--danger); margin-bottom: 10px; display: none; }
+.pin-hint { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+
+.admin-content { display: none; }
+.admin-mode .admin-content { display: block; }
+
+.admin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+.admin-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.15s;
+}
+.admin-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.admin-card-ico { font-size: 24px; margin-bottom: 8px; color: var(--text-sub); }
+.admin-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.admin-card p { font-size: 11px; color: var(--text-sub); }
+.activity-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: none; }
+.act-ico { font-size: 16px; color: var(--text-sub); flex-shrink: 0; margin-top: 1px; }
+.act-info .act-title { font-size: 13px; font-weight: 500; }
+.act-info .act-meta { font-size: 11px; color: var(--text-sub); }
+
+.notice {
+  background: var(--primary-pale);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
+  font-size: 12px; color: var(--primary);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none;
+  min-height: 500px;
+  background: rgba(0,0,0,0.45);
+  align-items: center; justify-content: center;
+  padding: 20px;
+  border-radius: var(--radius);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 100%; max-width: 420px;
+  box-shadow: var(--shadow-md);
+}
+.modal h3 { font-family: var(--font-round); font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+.form-group { margin-bottom: 12px; }
+.form-group label { font-size: 12px; font-weight: 700; color: var(--text-sub); display: block; margin-bottom: 4px; }
+.form-input, .form-select {
+  width: 100%; padding: 8px 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-family: var(--font); font-size: 13px; color: var(--text);
+  background: var(--bg); outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus { border-color: var(--primary); }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+
+/* ─── TAGS ─── */
+.tag {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+}
+.tag-view { background: var(--success-light); color: var(--success); }
+.tag-admin { background: var(--accent-light); color: var(--warn); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 480px) {
+  .stat-row { grid-template-columns: repeat(3,1fr); }
+  .admin-grid { grid-template-columns: 1fr; }
+  .member-grid { grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-header-left">
+    <div class="site-logo">次世<br>代</div>
+    <div class="site-title-wrap">
+      <div class="site-title">次世代コネクト委員会</div>
+      <div class="site-subtitle">NMEC 新潟市異業種交流研究会協同組合</div>
+    </div>
+  </div>
+  <span class="admin-badge" id="adminBadge">管理者モード</span>
+</header>
+
+<!-- TAB BAR -->
+<nav class="tab-bar" role="tablist">
+  <button class="tab-btn active" onclick="switchTab('members')" id="tab-members" role="tab">
+    <span class="tab-icon">👥</span>メンバー
+  </button>
+  <button class="tab-btn" onclick="switchTab('schedule')" id="tab-schedule" role="tab">
+    <span class="tab-icon">📅</span>日程表
+  </button>
+  <button class="tab-btn" onclick="switchTab('docs')" id="tab-docs" role="tab">
+    <span class="tab-icon">📁</span>資料
+  </button>
+  <button class="tab-btn" onclick="switchTab('admin')" id="tab-admin" role="tab">
+    <span class="tab-icon">⚙️</span>管理
+  </button>
+</nav>
+
+<!-- ═══════════ MEMBERS PANEL ═══════════ -->
+<main class="content">
+<div class="panel active" id="panel-members">
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-num" id="stat-member-count">0</div><div class="stat-label">メンバー総数</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-industry-count">0</div><div class="stat-label">業種数</div></div>
+    <div class="stat-box"><div class="stat-num">R7</div><div class="stat-label">活動年度</div></div>
+  </div>
+  <div class="sec-title">メンバー一覧</div>
+  <div class="member-grid" id="memberGrid"></div>
+  <button class="btn-dashed admin-only" id="addMemberBtn" style="margin-top:4px">
+    ＋ メンバーを追加
+  </button>
+</div>
+
+<!-- ═══════════ SCHEDULE PANEL ═══════════ -->
+<div class="panel" id="panel-schedule">
+  <div class="card">
+    <div class="cal-header">
+      <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+      <span class="cal-month-label" id="calTitle"></span>
+      <button class="cal-nav-btn" onclick="changeMonth(1)">&#8250;</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <div class="sec-title" style="margin-top:4px">直近の予定</div>
+  <div class="schedule-list" id="scheduleList"></div>
+  <button class="btn-dashed admin-only" id="addSchedBtn" style="margin-top:12px">
+    ＋ 予定を追加
+  </button>
+</div>
+
+<!-- ═══════════ DOCS PANEL ═══════════ -->
+<div class="panel" id="panel-docs">
+  <div id="folderView"></div>
+  <div class="admin-only" style="flex-direction:column">
+    <label class="upload-area" id="uploadArea">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      ファイルをドロップ、またはクリックしてアップロード
+      <input type="file" id="fileInput" multiple>
+    </label>
+  </div>
+</div>
+
+<!-- ═══════════ ADMIN PANEL ═══════════ -->
+<div class="panel" id="panel-admin">
+  <!-- LOCK SCREEN -->
+  <div id="adminLockScreen" class="admin-lock">
+    <div class="admin-lock-icon">🔐</div>
+    <h2>管理者ログイン</h2>
+    <p>管理者パスワードを入力してください</p>
+    <div class="pin-row">
+      <input class="pin-input" type="password" maxlength="1" id="p0" inputmode="numeric">
+      <input class="pin-input" type="password" maxlength="1" id="p1" inputmode="numeric">
+      <input class="pin-input" type="password" maxlength="1" id="p2" inputmode="numeric">
+      <input class="pin-input" type="password" maxlength="1" id="p3" inputmode="numeric">
+    </div>
+    <div class="pin-error" id="pinError">パスワードが違います</div>
+    <button class="btn btn-primary" onclick="checkPin()" style="width:100%">ログイン</button>
+    <p class="pin-hint" id="pinHintText">※ 初回はパスワード未設定のため「0000」で入れます</p>
+  </div>
+
+  <!-- ADMIN CONTENT -->
+  <div class="admin-content" id="adminContent">
+    <div class="notice">⚙️ 管理者モードで操作中です。変更はリアルタイムに反映されます。</div>
+    <div class="sec-title">管理メニュー</div>
+    <div class="admin-grid">
+      <div class="admin-card" onclick="switchTab('members')">
+        <div class="admin-card-ico">👥</div>
+        <h3>メンバー管理</h3>
+        <p>追加・編集・削除</p>
+      </div>
+      <div class="admin-card" onclick="switchTab('schedule')">
+        <div class="admin-card-ico">📅</div>
+        <h3>日程管理</h3>
+        <p>予定の追加・編集・削除</p>
+      </div>
+      <div class="admin-card" onclick="switchTab('docs')">
+        <div class="admin-card-ico">📁</div>
+        <h3>資料管理</h3>
+        <p>ファイルのアップロード・削除</p>
+      </div>
+      <div class="admin-card" onclick="showChangePinModal()">
+        <div class="admin-card-ico">🔑</div>
+        <h3>パスワード変更</h3>
+        <p>管理者パスワードの変更</p>
+      </div>
+    </div>
+    <div class="sec-title">データ操作</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+      <button class="btn btn-outline" onclick="exportData()">📥 JSONエクスポート</button>
+      <button class="btn btn-outline" onclick="document.getElementById('importInput').click()">📤 JSONインポート</button>
+      <input type="file" id="importInput" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+    <div class="sec-title">最近の更新</div>
+    <div class="card">
+      <div id="activityLog"></div>
+    </div>
+    <div style="margin-top:16px">
+      <button class="btn btn-danger btn-sm" onclick="adminLogout()">🔒 管理者ログアウト</button>
+    </div>
+  </div>
+</div>
+</main>
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- Member Modal -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal">
+    <h3 id="memberModalTitle">メンバーを追加</h3>
+    <div class="form-group"><label>氏名 *</label><input class="form-input" id="mName" placeholder="例：田中 誠司"></div>
+    <div class="form-group"><label>所属・業種 *</label><input class="form-input" id="mCompany" placeholder="例：建設業 / 〇〇株式会社"></div>
+    <div class="form-group">
+      <label>役職</label>
+      <select class="form-select" id="mRole">
+        <option value="chair">委員長</option>
+        <option value="vice">副委員長</option>
+        <option value="staff">幹事</option>
+        <option value="member" selected>委員</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>アバターカラー</label>
+      <select class="form-select" id="mColor">
+        <option value="av-blue">ブルー</option>
+        <option value="av-teal">グリーン</option>
+        <option value="av-purple">パープル</option>
+        <option value="av-coral">コーラル</option>
+        <option value="av-pink">ピンク</option>
+        <option value="av-green">ライムグリーン</option>
+        <option value="av-amber">アンバー</option>
+      </select>
+    </div>
+    <div class="form-group"><label>メモ（任意）</label><input class="form-input" id="mNote" placeholder=""></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('memberModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveMember()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Schedule Modal -->
+<div class="modal-overlay" id="schedModal">
+  <div class="modal">
+    <h3 id="schedModalTitle">予定を追加</h3>
+    <div class="form-group"><label>タイトル *</label><input class="form-input" id="sTitle" placeholder="例：第3回 定例委員会"></div>
+    <div class="form-group"><label>日付 *</label><input class="form-input" type="date" id="sDate"></div>
+    <div class="form-group"><label>曜日（自動）</label><input class="form-input" id="sDow" readonly style="background:#f8fafc;color:var(--text-sub)"></div>
+    <div class="form-group"><label>時間</label><input class="form-input" id="sTime" placeholder="例：18:30〜20:00"></div>
+    <div class="form-group"><label>場所</label><input class="form-input" id="sPlace" placeholder="例：NMECビル 3F会議室"></div>
+    <div class="form-group">
+      <label>種別</label>
+      <select class="form-select" id="sType">
+        <option value="a">定例</option>
+        <option value="b">企画</option>
+        <option value="c">その他</option>
+      </select>
+    </div>
+    <div class="form-group"><label>メモ（任意）</label><input class="form-input" id="sNote" placeholder=""></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('schedModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveSchedule()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change PIN Modal -->
+<div class="modal-overlay" id="pinModal">
+  <div class="modal">
+    <h3>パスワード変更</h3>
+    <div class="form-group"><label>現在のパスワード（4桁）</label><input class="form-input" type="password" id="pinOld" maxlength="4" inputmode="numeric"></div>
+    <div class="form-group"><label>新しいパスワード（4桁）</label><input class="form-input" type="password" id="pinNew1" maxlength="4" inputmode="numeric"></div>
+    <div class="form-group"><label>新しいパスワード（確認）</label><input class="form-input" type="password" id="pinNew2" maxlength="4" inputmode="numeric"></div>
+    <div class="pin-error" id="pinChangeError" style="display:none"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('pinModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="changePin()">変更する</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <h3 id="confirmTitle">確認</h3>
+    <p id="confirmMsg" style="font-size:13px;color:var(--text-sub);margin-bottom:16px"></p>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('confirmModal')">キャンセル</button>
+      <button class="btn btn-danger" id="confirmOkBtn">削除する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ STATE ═══
+const DOW = ['日','月','火','水','木','金','土'];
+const COLORS = ['av-blue','av-teal','av-purple','av-coral','av-pink','av-green','av-amber'];
+let calYear, calMonth;
+let editMemberId = null, editSchedId = null;
+let isAdmin = false;
+
+// ═══ DATA ═══
+const defaultData = {
+  members: [
+    {id:'m1',name:'田中 誠司',company:'建設業',role:'chair',color:'av-purple',note:''},
+    {id:'m2',name:'佐藤 美咲',company:'IT・情報',role:'vice',color:'av-teal',note:''},
+    {id:'m3',name:'鈴木 健太',company:'製造業',role:'staff',color:'av-blue',note:''},
+    {id:'m4',name:'山田 陽子',company:'サービス業',role:'staff',color:'av-coral',note:''},
+    {id:'m5',name:'高橋 淳',company:'飲食業',role:'member',color:'av-green',note:''},
+    {id:'m6',name:'渡辺 由美',company:'医療・福祉',role:'member',color:'av-pink',note:''}
+  ],
+  schedules: [
+    {id:'s1',title:'第3回 定例委員会',date:'2025-05-28',time:'18:30〜20:00',place:'NMECビル 3F会議室',type:'a',note:''},
+    {id:'s2',title:'次世代交流イベント 企画会議',date:'2025-06-11',time:'19:00〜20:30',place:'オンライン（Zoom）',type:'b',note:''},
+    {id:'s3',title:'第4回 定例委員会',date:'2025-06-25',time:'18:30〜20:00',place:'NMECビル 3F会議室',type:'a',note:''}
+  ],
+  folders: [
+    {id:'f1',name:'議事録',icon:'📄'},
+    {id:'f2',name:'活動資料',icon:'📊'},
+    {id:'f3',name:'その他',icon:'📦'}
+  ],
+  files: [
+    {id:'fl1',folderId:'f1',name:'第2回定例委員会 議事録.pdf',size:'84KB',date:'2025/04/23',data:null},
+    {id:'fl2',folderId:'f1',name:'第1回定例委員会 議事録.pdf',size:'76KB',date:'2025/03/26',data:null},
+    {id:'fl3',folderId:'f2',name:'R7年度 活動計画書.xlsx',size:'122KB',date:'2025/04/01',data:null},
+    {id:'fl4',folderId:'f2',name:'次世代交流イベント 企画案.pptx',size:'2.1MB',date:'2025/04/10',data:null}
+  ],
+  activity: [
+    {id:'a1',icon:'👤',title:'渡辺 由美さんが追加されました',meta:'2025/05/15　田中 誠司（委員長）'},
+    {id:'a2',icon:'📄',title:'「第2回議事録」がアップロードされました',meta:'2025/04/24　佐藤 美咲（副委員長）'},
+    {id:'a3',icon:'📅',title:'第4回定例委員会が追加されました',meta:'2025/04/23　田中 誠司（委員長）'}
+  ],
+  pin: '0000'
+};
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem('nmec_data');
+    return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(defaultData));
+  } catch(e) { return JSON.parse(JSON.stringify(defaultData)); }
+}
+function saveData(d) {
+  localStorage.setItem('nmec_data', JSON.stringify(d));
+}
+let DB = loadData();
+
+// ═══ HASH ═══
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// ═══ TABS ═══
+const TABS = ['members','schedule','docs','admin'];
+function switchTab(name) {
+  TABS.forEach(t => {
+    document.getElementById('panel-'+t).classList.toggle('active', t===name);
+    document.getElementById('tab-'+t).classList.toggle('active', t===name);
+  });
+  if(name==='schedule') renderCalendar();
+  if(name==='docs') renderDocs();
+  if(name==='members') renderMembers();
+  if(name==='admin') renderAdmin();
+}
+
+// ═══ MEMBERS ═══
+function initials(name) {
+  const parts = name.trim().split(/[\s　]+/);
+  if(parts.length >= 2) return parts[0].charAt(0) + parts[1].charAt(0);
+  return name.slice(0,2);
+}
+function roleLabel(r) {
+  return {chair:'委員長',vice:'副委員長',staff:'幹事',member:'委員'}[r]||'委員';
+}
+function roleBadgeClass(r) {
+  return {chair:'rb-chair',vice:'rb-vice',staff:'rb-staff',member:'rb-member'}[r]||'rb-member';
+}
+function renderMembers() {
+  const grid = document.getElementById('memberGrid');
+  const members = DB.members;
+  grid.innerHTML = members.map(m => `
+    <div class="member-card">
+      <div class="avatar ${m.color}">${initials(m.name)}</div>
+      <div class="member-name">${m.name}</div>
+      <div class="member-company">${m.company}</div>
+      <span class="role-badge ${roleBadgeClass(m.role)}">${roleLabel(m.role)}</span>
+      ${m.note ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px">${m.note}</div>` : ''}
+      <div class="member-edit-btns">
+        <button class="edit-icon-btn btn-edit-m" onclick="editMember('${m.id}')" title="編集">✏️</button>
+        <button class="edit-icon-btn btn-del-m" onclick="deleteMember('${m.id}')" title="削除">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('stat-member-count').textContent = members.length;
+  const industries = new Set(members.map(m => m.company.split('・')[0].trim()));
+  document.getElementById('stat-industry-count').textContent = industries.size;
+}
+function openMemberModal(id=null) {
+  editMemberId = id;
+  document.getElementById('memberModalTitle').textContent = id ? 'メンバーを編集' : 'メンバーを追加';
+  if(id) {
+    const m = DB.members.find(x=>x.id===id);
+    document.getElementById('mName').value = m.name;
+    document.getElementById('mCompany').value = m.company;
+    document.getElementById('mRole').value = m.role;
+    document.getElementById('mColor').value = m.color;
+    document.getElementById('mNote').value = m.note||'';
+  } else {
+    ['mName','mCompany','mNote'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('mRole').value='member';
+    document.getElementById('mColor').value='av-blue';
+  }
+  openModal('memberModal');
+}
+function editMember(id) { openMemberModal(id); }
+function deleteMember(id) {
+  const m = DB.members.find(x=>x.id===id);
+  showConfirm(`「${m.name}」を削除しますか？`, () => {
+    DB.members = DB.members.filter(x=>x.id!==id);
+    addActivity('👤',`${m.name}さんが削除されました`);
+    saveData(DB); renderMembers();
+  });
+}
+function saveMember() {
+  const name = document.getElementById('mName').value.trim();
+  const company = document.getElementById('mCompany').value.trim();
+  if(!name||!company) { alert('氏名と所属は必須です'); return; }
+  const obj = {
+    id: editMemberId || 'm'+Date.now(),
+    name, company,
+    role: document.getElementById('mRole').value,
+    color: document.getElementById('mColor').value,
+    note: document.getElementById('mNote').value.trim()
+  };
+  if(editMemberId) {
+    const i = DB.members.findIndex(x=>x.id===editMemberId);
+    DB.members[i] = obj;
+    addActivity('✏️',`${name}さんの情報が更新されました`);
+  } else {
+    DB.members.push(obj);
+    addActivity('👤',`${name}さんが追加されました`);
+  }
+  saveData(DB); closeModal('memberModal'); renderMembers();
+}
+document.getElementById('addMemberBtn').onclick = () => openMemberModal();
+
+// ═══ CALENDAR ═══
+const today = new Date();
+calYear = today.getFullYear();
+calMonth = today.getMonth();
+
+function changeMonth(d) {
+  calMonth += d;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCalendar();
+}
+function renderCalendar() {
+  const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  document.getElementById('calTitle').textContent = `${calYear}年 ${MONTHS[calMonth]}`;
+  const grid = document.getElementById('calGrid');
+  const firstDow = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+
+  const eventsMap = {};
+  DB.schedules.forEach(s => {
+    const d = new Date(s.date);
+    if(d.getFullYear()===calYear && d.getMonth()===calMonth) {
+      const day = d.getDate();
+      if(!eventsMap[day]) eventsMap[day]=[];
+      eventsMap[day].push(s);
+    }
+  });
+
+  let html = ['日','月','火','水','木','金','土'].map((d,i)=>
+    `<div class="cal-dow ${i===0?'sun':i===6?'sat':''}">${d}</div>`).join('');
+  for(let i=0;i<firstDow;i++) html+=`<div class="cal-cell empty"></div>`;
+  for(let day=1;day<=daysInMonth;day++) {
+    const dow=(firstDow+day-1)%7;
+    const isToday=today.getFullYear()===calYear&&today.getMonth()===calMonth&&today.getDate()===day;
+    const evs=eventsMap[day]||[];
+    html+=`<div class="cal-cell ${isToday?'today':''} ${dow===0?'sun':''} ${dow===6?'sat':''} ${evs.length?'has-event':''}">
+      <div class="day-num">${day}</div>
+      ${evs.slice(0,2).map(e=>`<div class="ev-dot ev-${e.type}">${e.title.slice(0,6)}</div>`).join('')}
+    </div>`;
+  }
+  grid.innerHTML = html;
+  renderScheduleList();
+}
+function renderScheduleList() {
+  const list = document.getElementById('scheduleList');
+  const now = new Date(); now.setHours(0,0,0,0);
+  const upcoming = DB.schedules
+    .filter(s => new Date(s.date) >= now)
+    .sort((a,b) => new Date(a.date)-new Date(b.date))
+    .slice(0,6);
+  if(!upcoming.length) { list.innerHTML='<div style="font-size:13px;color:var(--text-sub);padding:12px">予定はありません</div>'; return; }
+  const typeLabel = {a:'定例',b:'企画',c:'その他'};
+  list.innerHTML = upcoming.map(s => {
+    const d = new Date(s.date);
+    return `<div class="sched-item">
+      <div class="sched-date">
+        <div class="sched-month">${d.getMonth()+1}月</div>
+        <div class="sched-day">${d.getDate()}</div>
+        <div class="sched-dow">${DOW[d.getDay()]}</div>
+      </div>
+      <div class="sched-info">
+        <div class="sched-title">${s.title}</div>
+        <div class="sched-detail">
+          ${s.time?`<span>🕐 ${s.time}</span>`:''}
+          ${s.place?`<span>📍 ${s.place}</span>`:''}
+        </div>
+        ${s.note?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${s.note}</div>`:''}
+      </div>
+      <div class="sched-actions">
+        <span class="sched-tag st-${s.type}">${typeLabel[s.type]||''}</span>
+        ${isAdmin?`<button class="edit-icon-btn btn-edit-m" onclick="editSchedule('${s.id}')" style="margin-left:4px">✏️</button>
+        <button class="edit-icon-btn btn-del-m" onclick="deleteSchedule('${s.id}')">🗑️</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function openSchedModal(id=null) {
+  editSchedId = id;
+  document.getElementById('schedModalTitle').textContent = id ? '予定を編集' : '予定を追加';
+  if(id) {
+    const s = DB.schedules.find(x=>x.id===id);
+    document.getElementById('sTitle').value = s.title;
+    document.getElementById('sDate').value = s.date;
+    document.getElementById('sTime').value = s.time||'';
+    document.getElementById('sPlace').value = s.place||'';
+    document.getElementById('sType').value = s.type||'a';
+    document.getElementById('sNote').value = s.note||'';
+    updateDow();
+  } else {
+    ['sTitle','sTime','sPlace','sNote'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('sDate').value = '';
+    document.getElementById('sDow').value = '';
+    document.getElementById('sType').value = 'a';
+  }
+  openModal('schedModal');
+}
+function editSchedule(id) { openSchedModal(id); }
+function deleteSchedule(id) {
+  const s = DB.schedules.find(x=>x.id===id);
+  showConfirm(`「${s.title}」を削除しますか？`, () => {
+    DB.schedules = DB.schedules.filter(x=>x.id!==id);
+    addActivity('📅',`「${s.title}」が削除されました`);
+    saveData(DB); renderCalendar();
+  });
+}
+function saveSchedule() {
+  const title = document.getElementById('sTitle').value.trim();
+  const date = document.getElementById('sDate').value;
+  if(!title||!date) { alert('タイトルと日付は必須です'); return; }
+  const obj = {
+    id: editSchedId || 's'+Date.now(),
+    title, date,
+    time: document.getElementById('sTime').value.trim(),
+    place: document.getElementById('sPlace').value.trim(),
+    type: document.getElementById('sType').value,
+    note: document.getElementById('sNote').value.trim()
+  };
+  if(editSchedId) {
+    const i = DB.schedules.findIndex(x=>x.id===editSchedId);
+    DB.schedules[i]=obj;
+    addActivity('✏️',`「${title}」の予定が更新されました`);
+  } else {
+    DB.schedules.push(obj);
+    addActivity('📅',`「${title}」が追加されました`);
+  }
+  saveData(DB); closeModal('schedModal'); renderCalendar();
+}
+function updateDow() {
+  const v = document.getElementById('sDate').value;
+  if(v) { const d=new Date(v); document.getElementById('sDow').value=DOW[d.getDay()]+'曜日'; }
+}
+document.getElementById('sDate').addEventListener('change', updateDow);
+document.getElementById('addSchedBtn').onclick = () => openSchedModal();
+
+// ═══ DOCS ═══
+function fileIcon(name) {
+  const ext = name.split('.').pop().toLowerCase();
+  if(['pdf'].includes(ext)) return '📄';
+  if(['xlsx','xls','csv'].includes(ext)) return '📊';
+  if(['pptx','ppt'].includes(ext)) return '📑';
+  if(['doc','docx'].includes(ext)) return '📝';
+  if(['jpg','jpeg','png','gif','webp'].includes(ext)) return '🖼️';
+  if(['mp4','mov','avi'].includes(ext)) return '🎬';
+  if(['zip','rar','7z'].includes(ext)) return '🗜️';
+  return '📎';
+}
+function renderDocs() {
+  const view = document.getElementById('folderView');
+  view.innerHTML = DB.folders.map(folder => {
+    const files = DB.files.filter(f=>f.folderId===folder.id);
+    return `<div class="folder-section">
+      <div class="folder-hd" onclick="toggleFolder('fl-${folder.id}')">
+        <span>${folder.icon} ${folder.name}</span>
+        <span class="cnt">${files.length}件</span>
+        <span id="fl-arrow-${folder.id}">▼</span>
+      </div>
+      <div class="file-list" id="fl-${folder.id}">
+        ${files.length ? files.map(f=>`
+          <div class="file-item" id="file-${f.id}">
+            <div class="file-ico">${fileIcon(f.name)}</div>
+            <div class="file-info">
+              <div class="file-name">${f.name}</div>
+              <div class="file-meta">${f.date}　${f.size}</div>
+            </div>
+            <div class="file-actions">
+              ${f.data ? `<button class="btn btn-outline btn-sm" onclick="downloadFile('${f.id}')">⬇ 保存</button>` : `<span style="font-size:11px;color:var(--text-muted)">リンクのみ</span>`}
+              ${isAdmin ? `<button class="btn btn-outline btn-sm" onclick="deleteFile('${f.id}')" style="margin-left:4px">🗑️</button>` : ''}
+            </div>
+          </div>`).join('') : `<div style="font-size:13px;color:var(--text-sub);padding:8px 4px">ファイルがありません</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleFolder(id) {
+  const el = document.getElementById(id);
+  if(el) el.style.display = el.style.display==='none'?'flex':'none';
+}
+function downloadFile(id) {
+  const f = DB.files.find(x=>x.id===id);
+  if(!f||!f.data) return;
+  const a = document.createElement('a');
+  a.href = f.data; a.download = f.name; a.click();
+}
+function deleteFile(id) {
+  const f = DB.files.find(x=>x.id===id);
+  showConfirm(`「${f.name}」を削除しますか？`, () => {
+    DB.files = DB.files.filter(x=>x.id!==id);
+    addActivity('🗑️',`「${f.name}」が削除されました`);
+    saveData(DB); renderDocs();
+  });
+}
+
+// File upload
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  const files = Array.from(e.target.files);
+  if(!files.length) return;
+  const folderId = prompt('保存先フォルダを番号で選択してください:\n' +
+    DB.folders.map((f,i)=>`${i+1}. ${f.name}`).join('\n'));
+  const idx = parseInt(folderId)-1;
+  if(isNaN(idx)||idx<0||idx>=DB.folders.length) { alert('無効なフォルダです'); return; }
+  const folder = DB.folders[idx];
+  let done = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const size = file.size < 1024 ? file.size+'B'
+        : file.size < 1024*1024 ? (file.size/1024).toFixed(0)+'KB'
+        : (file.size/1024/1024).toFixed(1)+'MB';
+      DB.files.push({
+        id: 'fl'+Date.now()+Math.random(),
+        folderId: folder.id,
+        name: file.name, size,
+        date: new Date().toLocaleDateString('ja-JP').replace(/\//g,'/'),
+        data: ev.target.result
+      });
+      addActivity('📁',`「${file.name}」がアップロードされました`);
+      done++;
+      if(done===files.length) { saveData(DB); renderDocs(); }
+    };
+    reader.readAsDataURL(file);
+  });
+  this.value='';
+});
+
+// ═══ ADMIN ═══
+function renderAdmin() {
+  const log = document.getElementById('activityLog');
+  if(!DB.activity||!DB.activity.length) { log.innerHTML='<div style="font-size:13px;color:var(--text-sub)">まだ更新はありません</div>'; return; }
+  log.innerHTML = DB.activity.slice().reverse().slice(0,10).map(a=>`
+    <div class="activity-item">
+      <div class="act-ico">${a.icon}</div>
+      <div class="act-info">
+        <div class="act-title">${a.title}</div>
+        <div class="act-meta">${a.meta}</div>
+      </div>
+    </div>`).join('');
+}
+function addActivity(icon, title) {
+  const now = new Date();
+  const meta = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+  if(!DB.activity) DB.activity=[];
+  DB.activity.push({id:'a'+Date.now(), icon, title, meta});
+  if(DB.activity.length > 50) DB.activity = DB.activity.slice(-50);
+}
+
+// PIN Auth
+const pinInputs = [0,1,2,3].map(i=>document.getElementById('p'+i));
+pinInputs.forEach((inp,i)=>{
+  inp.addEventListener('input',()=>{
+    if(inp.value&&i<3) pinInputs[i+1].focus();
+  });
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'&&!inp.value&&i>0) pinInputs[i-1].focus();
+    if(e.key==='Enter') checkPin();
+  });
+});
+
+async function checkPin() {
+  const entered = pinInputs.map(i=>i.value).join('');
+  if(entered.length<4) { document.getElementById('pinError').style.display='block'; document.getElementById('pinError').textContent='4桁入力してください'; return; }
+  const stored = DB.pin||'0000';
+  let match = false;
+  if(stored.length===64) {
+    const h = await hashPin(entered);
+    match = h===stored;
+  } else {
+    match = entered===stored;
+  }
+  if(match) {
+    isAdmin = true;
+    document.getElementById('adminLockScreen').style.display='none';
+    document.getElementById('adminContent').style.display='block';
+    document.getElementById('adminBadge').classList.add('visible');
+    document.body.classList.add('admin-mode');
+    renderAdmin(); renderMembers(); renderScheduleList(); renderDocs();
+    pinInputs.forEach(i=>i.value='');
+  } else {
+    document.getElementById('pinError').style.display='block';
+    document.getElementById('pinError').textContent='パスワードが違います';
+    pinInputs.forEach(i=>i.value='');
+    pinInputs[0].focus();
+  }
+}
+
+function adminLogout() {
+  isAdmin = false;
+  document.getElementById('adminLockScreen').style.display='block';
+  document.getElementById('adminContent').style.display='none';
+  document.getElementById('adminBadge').classList.remove('visible');
+  document.body.classList.remove('admin-mode');
+  renderMembers(); renderScheduleList(); renderDocs();
+}
+
+function showChangePinModal() { openModal('pinModal'); }
+async function changePin() {
+  const oldPin = document.getElementById('pinOld').value;
+  const newPin1 = document.getElementById('pinNew1').value;
+  const newPin2 = document.getElementById('pinNew2').value;
+  const errEl = document.getElementById('pinChangeError');
+  errEl.style.display='none';
+  if(newPin1.length<4||oldPin.length<4) { errEl.textContent='4桁で入力してください'; errEl.style.display='block'; return; }
+  if(newPin1!==newPin2) { errEl.textContent='新しいパスワードが一致しません'; errEl.style.display='block'; return; }
+  const stored = DB.pin||'0000';
+  let match = false;
+  if(stored.length===64) { const h=await hashPin(oldPin); match=h===stored; }
+  else { match=oldPin===stored; }
+  if(!match) { errEl.textContent='現在のパスワードが違います'; errEl.style.display='block'; return; }
+  DB.pin = await hashPin(newPin1);
+  saveData(DB);
+  alert('パスワードを変更しました');
+  ['pinOld','pinNew1','pinNew2'].forEach(id=>document.getElementById(id).value='');
+  closeModal('pinModal');
+  document.getElementById('pinHintText').style.display='none';
+}
+
+// ═══ DATA EXPORT/IMPORT ═══
+function exportData() {
+  const blob = new Blob([JSON.stringify(DB, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nmec_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+function importData(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!confirm('現在のデータをインポートデータで上書きします。よろしいですか？')) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      DB = JSON.parse(ev.target.result);
+      saveData(DB);
+      alert('インポートが完了しました');
+      renderAdmin(); renderMembers(); renderCalendar(); renderDocs();
+    } catch(err) { alert('JSONファイルが正しくありません'); }
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+
+// ═══ MODAL ═══
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+let confirmCallback = null;
+function showConfirm(msg, cb) {
+  document.getElementById('confirmMsg').textContent = msg;
+  confirmCallback = cb;
+  openModal('confirmModal');
+}
+document.getElementById('confirmOkBtn').onclick = () => { closeModal('confirmModal'); if(confirmCallback) confirmCallback(); };
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target===el) closeModal(el.id); });
+});
+
+// ═══ INIT ═══
+renderMembers();
+renderCalendar();
+renderDocs();
+</script>
+</body>
+</html>
