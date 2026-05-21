@@ -603,6 +603,14 @@ body {
     <div class="form-group"><label>連絡先番号</label><input class="form-input" id="mTel" placeholder="例：025-XXX-XXXX" inputmode="tel"></div>
     <div class="form-group"><label>メールアドレス</label><input class="form-input" id="mEmail" placeholder="例：tanaka@example.com" inputmode="email" type="email"></div>
     <div class="form-group">
+      <label>所属</label>
+      <select class="form-select" id="mSection">
+        <option value="" selected>― 未選択 ―</option>
+        <option value="connect">次世代コネクト</option>
+        <option value="boost">次世代ブースト</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label>アバターカラー</label>
       <select class="form-select" id="mColor">
         <option value="av-blue">ブルー</option>
@@ -766,6 +774,7 @@ function renderMembers() {
       <div class="member-name">${m.name}</div>
       ${m.role ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:2px">${m.role}</div>` : ''}
       <div class="member-company">${m.company||''}</div>
+      ${m.section ? `<span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:4px;${m.section==='connect'?'background:#dbeafe;color:#1e40af':'background:#d1fae5;color:#065f46'}">${m.section==='connect'?'次世代コネクト':'次世代ブースト'}</span>` : ''}
       ${m.address ? `<div style="font-size:10px;color:var(--text-muted);margin-top:3px">📍 ${m.address}</div>` : ''}
       ${m.tel ? `<div style="font-size:10px;color:var(--text-muted);margin-top:1px">📞 ${m.tel}</div>` : ''}
       ${m.email ? `<div style="font-size:10px;color:var(--text-muted);margin-top:1px;word-break:break-all">✉️ ${m.email}</div>` : ''}
@@ -791,10 +800,12 @@ function openMemberModal(id=null) {
     document.getElementById('mCmRole').value = m.cmRole||'member';
     document.getElementById('mTel').value = m.tel||'';
     document.getElementById('mEmail').value = m.email||'';
+    document.getElementById('mSection').value = m.section||'';
     document.getElementById('mColor').value = m.color||'av-blue';
   } else {
     ['mName','mCompany','mAddress','mRole','mTel','mEmail'].forEach(fid=>document.getElementById(fid).value='');
     document.getElementById('mCmRole').value='member';
+    document.getElementById('mSection').value='';
     document.getElementById('mColor').value='av-blue';
   }
   openModal('memberModal');
@@ -820,6 +831,7 @@ function saveMember() {
     cmRole: document.getElementById('mCmRole').value,
     tel: document.getElementById('mTel').value.trim(),
     email: document.getElementById('mEmail').value.trim(),
+    section: document.getElementById('mSection').value,
     color: document.getElementById('mColor').value
   };
   if(editMemberId) {
