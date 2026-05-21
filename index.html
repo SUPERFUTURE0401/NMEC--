@@ -493,7 +493,7 @@ body {
 <div class="panel active" id="panel-members">
   <div class="stat-row">
     <div class="stat-box"><div class="stat-num" id="stat-member-count">0</div><div class="stat-label">メンバー総数</div></div>
-    <div class="stat-box"><div class="stat-num" id="stat-industry-count">0</div><div class="stat-label">業種数</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-industry-count">0</div><div class="stat-label">会社数</div></div>
     <div class="stat-box"><div class="stat-num">R7</div><div class="stat-label">活動年度</div></div>
   </div>
   <div class="sec-title">メンバー一覧</div>
@@ -597,19 +597,15 @@ body {
 
 <!-- Member Modal -->
 <div class="modal-overlay" id="memberModal">
-  <div class="modal">
+  <div class="modal" style="max-width:480px">
     <h3 id="memberModalTitle">メンバーを追加</h3>
     <div class="form-group"><label>氏名 *</label><input class="form-input" id="mName" placeholder="例：田中 誠司"></div>
-    <div class="form-group"><label>所属・業種 *</label><input class="form-input" id="mCompany" placeholder="例：建設業 / 〇〇株式会社"></div>
-    <div class="form-group">
-      <label>役職</label>
-      <select class="form-select" id="mRole">
-        <option value="chair">委員長</option>
-        <option value="vice">副委員長</option>
-        <option value="staff">幹事</option>
-        <option value="member" selected>委員</option>
-      </select>
-    </div>
+    <div class="form-group"><label>会社名 *</label><input class="form-input" id="mCompany" placeholder="例：〇〇建設株式会社"></div>
+    <div class="form-group"><label>住所</label><input class="form-input" id="mAddress" placeholder="例：新潟市中央区〇〇1-2-3"></div>
+    <div class="form-group"><label>役職</label><input class="form-input" id="mRole" placeholder="例：代表取締役・営業部長 など"></div>
+    <div class="form-group"><label>委員会役職</label><select class="form-select" id="mCmRole"><option value="chair">委員長</option><option value="vice">副委員長</option><option value="staff">幹事</option><option value="member" selected>委員</option></select></div>
+    <div class="form-group"><label>連絡先番号</label><input class="form-input" id="mTel" placeholder="例：025-XXX-XXXX" inputmode="tel"></div>
+    <div class="form-group"><label>メールアドレス</label><input class="form-input" id="mEmail" placeholder="例：tanaka@example.com" inputmode="email" type="email"></div>
     <div class="form-group">
       <label>アバターカラー</label>
       <select class="form-select" id="mColor">
@@ -622,7 +618,6 @@ body {
         <option value="av-amber">アンバー</option>
       </select>
     </div>
-    <div class="form-group"><label>メモ（任意）</label><input class="form-input" id="mNote" placeholder=""></div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('memberModal')">キャンセル</button>
       <button class="btn btn-primary" onclick="saveMember()">保存</button>
@@ -693,12 +688,12 @@ let isAdmin = false;
 // ═══ DATA ═══
 const defaultData = {
   members: [
-    {id:'m1',name:'田中 誠司',company:'建設業',role:'chair',color:'av-purple',note:''},
-    {id:'m2',name:'佐藤 美咲',company:'IT・情報',role:'vice',color:'av-teal',note:''},
-    {id:'m3',name:'鈴木 健太',company:'製造業',role:'staff',color:'av-blue',note:''},
-    {id:'m4',name:'山田 陽子',company:'サービス業',role:'staff',color:'av-coral',note:''},
-    {id:'m5',name:'高橋 淳',company:'飲食業',role:'member',color:'av-green',note:''},
-    {id:'m6',name:'渡辺 由美',company:'医療・福祉',role:'member',color:'av-pink',note:''}
+    {id:'m1',name:'田中 誠司',company:'〇〇建設株式会社',address:'新潟市中央区〇〇1-1-1',role:'代表取締役',cmRole:'chair',color:'av-purple',tel:'',email:''},
+    {id:'m2',name:'佐藤 美咲',company:'〇〇ITソリューションズ',address:'新潟市中央区〇〇2-2-2',role:'取締役',cmRole:'vice',color:'av-teal',tel:'',email:''},
+    {id:'m3',name:'鈴木 健太',company:'〇〇製作所',address:'新潟市東区〇〇3-3-3',role:'営業部長',cmRole:'staff',color:'av-blue',tel:'',email:''},
+    {id:'m4',name:'山田 陽子',company:'〇〇サービス株式会社',address:'新潟市西区〇〇4-4-4',role:'総務部長',cmRole:'staff',color:'av-coral',tel:'',email:''},
+    {id:'m5',name:'高橋 淳',company:'〇〇フード',address:'新潟市南区〇〇5-5-5',role:'代表',cmRole:'member',color:'av-green',tel:'',email:''},
+    {id:'m6',name:'渡辺 由美',company:'〇〇メディカル',address:'新潟市北区〇〇6-6-6',role:'',cmRole:'member',color:'av-pink',tel:'',email:''}
   ],
   schedules: [
     {id:'s1',title:'第3回 定例委員会',date:'2025-05-28',time:'18:30〜20:00',place:'NMECビル 3F会議室',type:'a',note:''},
@@ -771,11 +766,14 @@ function renderMembers() {
   const members = DB.members;
   grid.innerHTML = members.map(m => `
     <div class="member-card">
-      <div class="avatar ${m.color}">${initials(m.name)}</div>
+      <span class="role-badge ${roleBadgeClass(m.cmRole)}">${roleLabel(m.cmRole)}</span>
+      <div class="avatar ${m.color}" style="margin-top:6px">${initials(m.name)}</div>
       <div class="member-name">${m.name}</div>
-      <div class="member-company">${m.company}</div>
-      <span class="role-badge ${roleBadgeClass(m.role)}">${roleLabel(m.role)}</span>
-      ${m.note ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px">${m.note}</div>` : ''}
+      ${m.role ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:2px">${m.role}</div>` : ''}
+      <div class="member-company">${m.company||''}</div>
+      ${m.address ? `<div style="font-size:10px;color:var(--text-muted);margin-top:3px">📍 ${m.address}</div>` : ''}
+      ${m.tel ? `<div style="font-size:10px;color:var(--text-muted);margin-top:1px">📞 ${m.tel}</div>` : ''}
+      ${m.email ? `<div style="font-size:10px;color:var(--text-muted);margin-top:1px;word-break:break-all">✉️ ${m.email}</div>` : ''}
       <div class="member-edit-btns">
         <button class="edit-icon-btn btn-edit-m" onclick="editMember('${m.id}')" title="編集">✏️</button>
         <button class="edit-icon-btn btn-del-m" onclick="deleteMember('${m.id}')" title="削除">🗑️</button>
@@ -783,22 +781,25 @@ function renderMembers() {
     </div>
   `).join('');
   document.getElementById('stat-member-count').textContent = members.length;
-  const industries = new Set(members.map(m => m.company.split('・')[0].trim()));
-  document.getElementById('stat-industry-count').textContent = industries.size;
+  const companies = new Set(members.map(m => (m.company||'').trim()).filter(Boolean));
+  document.getElementById('stat-industry-count').textContent = companies.size;
 }
 function openMemberModal(id=null) {
   editMemberId = id;
   document.getElementById('memberModalTitle').textContent = id ? 'メンバーを編集' : 'メンバーを追加';
   if(id) {
     const m = DB.members.find(x=>x.id===id);
-    document.getElementById('mName').value = m.name;
-    document.getElementById('mCompany').value = m.company;
-    document.getElementById('mRole').value = m.role;
-    document.getElementById('mColor').value = m.color;
-    document.getElementById('mNote').value = m.note||'';
+    document.getElementById('mName').value = m.name||'';
+    document.getElementById('mCompany').value = m.company||'';
+    document.getElementById('mAddress').value = m.address||'';
+    document.getElementById('mRole').value = m.role||'';
+    document.getElementById('mCmRole').value = m.cmRole||'member';
+    document.getElementById('mTel').value = m.tel||'';
+    document.getElementById('mEmail').value = m.email||'';
+    document.getElementById('mColor').value = m.color||'av-blue';
   } else {
-    ['mName','mCompany','mNote'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('mRole').value='member';
+    ['mName','mCompany','mAddress','mRole','mTel','mEmail'].forEach(fid=>document.getElementById(fid).value='');
+    document.getElementById('mCmRole').value='member';
     document.getElementById('mColor').value='av-blue';
   }
   openModal('memberModal');
@@ -815,13 +816,16 @@ function deleteMember(id) {
 function saveMember() {
   const name = document.getElementById('mName').value.trim();
   const company = document.getElementById('mCompany').value.trim();
-  if(!name||!company) { alert('氏名と所属は必須です'); return; }
+  if(!name||!company) { alert('氏名と会社名は必須です'); return; }
   const obj = {
     id: editMemberId || 'm'+Date.now(),
     name, company,
-    role: document.getElementById('mRole').value,
-    color: document.getElementById('mColor').value,
-    note: document.getElementById('mNote').value.trim()
+    address: document.getElementById('mAddress').value.trim(),
+    role: document.getElementById('mRole').value.trim(),
+    cmRole: document.getElementById('mCmRole').value,
+    tel: document.getElementById('mTel').value.trim(),
+    email: document.getElementById('mEmail').value.trim(),
+    color: document.getElementById('mColor').value
   };
   if(editMemberId) {
     const i = DB.members.findIndex(x=>x.id===editMemberId);
