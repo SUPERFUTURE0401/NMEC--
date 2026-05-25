@@ -772,8 +772,8 @@ function renderMembers() {
       <span class="role-badge ${roleBadgeClass(m.cmRole)}">${roleLabel(m.cmRole)}</span>
       <div class="avatar ${m.color}" style="margin-top:6px">${initials(m.name)}</div>
       <div class="member-name">${m.name}</div>
-      ${m.role ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:2px">${m.role}</div>` : ''}
       <div class="member-company">${m.company||''}</div>
+      ${m.role ? `<div style="font-size:11px;color:var(--text-sub);margin-top:1px;margin-bottom:2px">${m.role}</div>` : ''}
       ${m.section ? `<span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:4px;${m.section==='connect'?'background:#dbeafe;color:#1e40af':'background:#d1fae5;color:#065f46'}">${m.section==='connect'?'次世代コネクト':'次世代ブースト'}</span>` : ''}
       ${m.address ? `<div style="font-size:10px;color:var(--text-muted);margin-top:3px">📍 ${m.address}</div>` : ''}
       ${m.tel ? `<div style="font-size:10px;color:var(--text-muted);margin-top:1px">📞 ${m.tel}</div>` : ''}
