@@ -411,11 +411,12 @@ body {
 /* ─── MODAL ─── */
 .modal-overlay {
   display: none;
-  min-height: 500px;
-  background: rgba(0,0,0,0.45);
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
   align-items: center; justify-content: center;
   padding: 20px;
-  border-radius: var(--radius);
+  z-index: 200;
 }
 .modal-overlay.open { display: flex; }
 .modal {
